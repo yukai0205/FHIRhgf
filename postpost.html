@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+   
+  <script src="setting.js"></script>
+  <script src="Cookie.js"></script> 
+  <script src="dateTime.js"></script> 
+  <script src="HTTP2024.js"></script>
+
+ <script>
+  //respiratoryRate.js
+
+  var jsonObj = {
+  "resourceType": "Observation",
+  "id": "25004300",
+  "status": "final",
+  "category": [
+    {
+      "coding": [
+        {
+          "system": "http://hl7.org/fhir/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        }
+      ],
+      "text": "Laboratory"
+    }
+  ],
+  "code": {
+    "coding": [
+      {
+        "system": "http://loinc.org",
+        "code": "19854-4",
+        "display": "Forced expiratory volume in 1 second [FEV1] respiratory system"
+      }
+    ],
+    "text": "FEV1 Test"
+  },
+  "subject": {
+    "reference": "Patient/34596832",
+    "display":"黃琪棻"
+  },
+  "effectiveDateTime": "2023-10-17T08:00:00",
+  "valueQuantity": {
+    "value": 2.5,
+    "unit": "L",
+    "system": "http://unitsofmeasure.org",
+    "code": "L"
+  },
+  "interpretation": {
+    "coding": [
+      {
+        "system": "http://hl7.org/fhir/v2/0078",
+        "code": "H",
+        "display": "High"
+      }
+    ],
+    "text": "High"
+  }
+};
+	 
+   function postData()
+   { jsonObj.valueQuantity.value = parseFloat(document.getElementById("resRate").value);
+     //jsonObj.effectiveDateTime = getFormattedTime();
+     date = document.getElementById("onsetDateTime").value;
+     jsonObj.effectiveDateTime = `${date}:00`;
+     var jsonStr = JSON.stringify(jsonObj);
+    //alert(jsonStr);
+    var apiURL;
+    apiURL = FHIRrootURL  + "Observation";
+    // HTTPPostData( apiURL,jsonStr);
+    sendHttpPost(apiURL, jsonStr, callBack);
+   } 
+   function callBack(ret) {
+        console.log(ret);    
+        alert(ret);
+        }
+ 
+	
+</script>	
+	
+</head>
+<body style="height: 780px">
+ 
+    <p>請輸入FEV1的測試結果</p>
+   
+     <br/>
+     日期: <input type="datetime-local" id="onsetDateTime" value="2023-10-10T16:30:00" /><br/><br/>
+     FEV1: <input type="text" id="resRate" />  <br/><br/>
+     <input id="Button1" onclick="postData()"  type="button" value="postData" />
+  
+  
+</body>
+
+</html>
